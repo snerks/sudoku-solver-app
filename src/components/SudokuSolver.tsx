@@ -3,6 +3,18 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 
 // Helper to create a 9x9 grid
+const defaultGrid = [
+    ['5', '3', '', '', '7', '', '', '', ''],
+    ['6', '', '', '1', '9', '5', '', '', ''],
+    ['', '9', '8', '', '', '', '', '6', ''],
+    ['8', '', '', '', '6', '', '', '', '3'],
+    ['4', '', '', '8', '', '3', '', '', '1'],
+    ['7', '', '', '', '2', '', '', '', '6'],
+    ['', '6', '', '', '', '', '2', '8', ''],
+    ['', '', '', '4', '1', '9', '', '', '5'],
+    ['', '', '', '', '8', '', '', '7', '9'],
+];
+
 const emptyGrid = () => Array.from({ length: 9 }, () => Array(9).fill(''));
 
 function isValidSudoku(grid: string[][]): boolean {
@@ -52,7 +64,7 @@ function solveSudoku(grid: string[][]): boolean {
 }
 
 const SudokuSolver: React.FC = () => {
-    const [grid, setGrid] = useState<string[][]>(emptyGrid());
+    const [grid, setGrid] = useState<string[][]>(defaultGrid.map(row => [...row]));
     const [message, setMessage] = useState<string>('');
 
     const handleChange = (row: number, col: number, value: string) => {
@@ -80,6 +92,11 @@ const SudokuSolver: React.FC = () => {
         } else {
             setMessage('No solution exists.');
         }
+    };
+
+    const handleReset = () => {
+        setGrid(defaultGrid.map(row => [...row]));
+        setMessage('');
     };
 
     return (
@@ -112,6 +129,7 @@ const SudokuSolver: React.FC = () => {
             <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
                 <Button variant="contained" color="primary" onClick={handleEvaluate}>Evaluate</Button>
                 <Button variant="contained" color="secondary" onClick={handleSolve}>Solve</Button>
+                <Button variant="outlined" onClick={handleReset}>Reset</Button>
             </Box>
             <Typography color={message.includes('Invalid') ? 'error' : 'primary'}>{message}</Typography>
         </Box>
