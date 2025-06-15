@@ -103,7 +103,8 @@ const SudokuSolver: React.FC = () => {
                 if (!copy[row][col]) {
                     for (let num = 1; num <= 9; num++) {
                         copy[row][col] = num.toString();
-                        if (isValidSudoku(copy)) {
+						const copyToSolve = copy.map(row => row.slice());
+                        if (isValidSudoku(copyToSolve) && solveSudoku(copyToSolve)) {
                             setGrid(copy);
                             explain = `Filled cell [${row + 1}, ${col + 1}] with ${num}. This is the smallest valid number for this cell.`;
                             setExplanation(explain);
